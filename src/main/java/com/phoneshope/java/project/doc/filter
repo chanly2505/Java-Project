@@ -1,0 +1,8 @@
+    //    @GetMapping("filter")
+//    public ResponseEntity<?> getBrandsByName (@RequestParam("name") String name){
+//        List<BrandDto> listBrand=brandService.getBrandsByName(name)
+//                .stream()
+//                .map(BrandMapper.INSTANCE::toBrandDto)
+//                .collect(Collectors.toList());
+//        return  ResponseEntity.ok(listBrand);
+//    }
