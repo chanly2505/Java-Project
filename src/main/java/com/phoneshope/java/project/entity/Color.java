@@ -7,12 +7,12 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "brands")
-public class Brand {
+@Table(name = "colors")
+public class Color {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "brand_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "color_id")
     private Long id;
-    @Column(name = "brand_name")
+    @Column(name = "color_name")
     private  String name;
 }

@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface PageUtill {
 
-    int PAGE_LIMIT=2;
+    int PAGE_LIMIT=10;
     int DEFAULT_PAGE_NUMBER=1;
 
     String PAGE_LIMITS = "_limit";

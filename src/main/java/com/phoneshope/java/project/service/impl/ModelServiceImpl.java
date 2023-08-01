@@ -2,6 +2,7 @@ package com.phoneshope.java.project.service.impl;
 
 import com.phoneshope.java.project.dto.ModelDTO;
 import com.phoneshope.java.project.entity.Model;
+import com.phoneshope.java.project.exception.ResourceNotFoundException;
 import com.phoneshope.java.project.mapper.ModelMappers;
 import com.phoneshope.java.project.repository.BrandRepository;
 import com.phoneshope.java.project.repository.ModelRepository;
@@ -22,12 +23,17 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public Model save(Model model) {
-//        Model model= modelMapper.toModel(dto);
         return modelRepository.save(model);
     }
 
     @Override
-    public List<Model> getByBrand(Integer brandId) {
+    public List<Model> getByBrand(Long brandId) {
         return modelRepository.findByBrandId(brandId);
+    }
+
+    @Override
+    public Model getById(Long id) {
+        return modelRepository.findById(id)
+                .orElseThrow( () -> new ResourceNotFoundException("Model", id));
     }
 }

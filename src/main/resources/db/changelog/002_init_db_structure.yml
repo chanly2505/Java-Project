@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001_init_db_structure
+      author: cly541913@gmail.com
+      changes:
+        - createTable:
+            tableName: colors
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: color_id
+                  type: BIGINT
+              - column:
+                  name: color_name
+                  type: VARCHAR(50)
+        - createTable:
+            tableName: products
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(50)
+              - column:
+                  name: product_id
+                  type: BIGINT
+                  constraints:
+                    - foreignKeyName: fk_models_brands
+                      references: brands(brand_id)
