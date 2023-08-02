@@ -40,9 +40,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void importProduct(ProductImportDto importDto) {
 
-        if (importDto.getProductId() == null){
-            throw new ApiException(HttpStatus.BAD_REQUEST, "Value can not be null");
-        }
         //Update Available product unit
         Product product = getById(importDto.getProductId());
         Integer availableUnit= 0;

@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/product")
@@ -28,7 +30,7 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
     @PostMapping("importProduct")
-    public ResponseEntity<?> importProduct(@RequestBody ProductImportDto importDto){
+    public ResponseEntity<?> importProduct(@RequestBody @Valid ProductImportDto importDto){
         productService.importProduct(importDto);
         return  ResponseEntity.ok().build();
     }
