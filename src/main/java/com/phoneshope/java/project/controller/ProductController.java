@@ -1,6 +1,7 @@
 package com.phoneshope.java.project.controller;
 
 import com.phoneshope.java.project.dto.BrandDto;
+import com.phoneshope.java.project.dto.PriceDto;
 import com.phoneshope.java.project.dto.ProductDTO;
 import com.phoneshope.java.project.dto.ProductImportDto;
 import com.phoneshope.java.project.entity.Brand;
@@ -32,6 +33,11 @@ public class ProductController {
     @PostMapping("importProduct")
     public ResponseEntity<?> importProduct(@RequestBody @Valid ProductImportDto importDto){
         productService.importProduct(importDto);
+        return  ResponseEntity.ok().build();
+    }
+    @PostMapping("{productID}/setSalePrice")
+    public ResponseEntity<?> setSalePrice(@PathVariable Long productID, @RequestBody PriceDto priceDto){
+        productService.setSalePrice(productID,priceDto.getPrice());
         return  ResponseEntity.ok().build();
     }
 

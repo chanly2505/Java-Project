@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 
 
@@ -34,6 +36,7 @@ public class Product {
     @JoinColumn(name = "color_id")
     private Color color;
 
+    @DecimalMin(value = "0.000001", message = "Price must be greater than 0")
     @Column(name = "sale_Price")
     private BigDecimal salePrice;
 
