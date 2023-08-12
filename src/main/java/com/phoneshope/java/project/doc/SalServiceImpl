@@ -1,0 +1,36 @@
+        List<Long> productsId = saleDTO.getProducts().stream()
+                .map(ProductSoldDTO::getProductId)
+                .toList();
+        productsId.forEach(productService::getById);
+        List<Product> products = productRepository.findAllById(productsId);
+        Map<Long, Product> productMap = productRepository
+                .findAllById(productsId)
+                .stream()
+                .collect(Collectors.toMap(Product::getId, Function.identity()));
+
+        saleDTO.getProducts().forEach(ps -> {
+            Product product = productMap.get(ps.getProductId());
+            if (product.getAvailableUnit() < ps.getNumberOfUnit()) {
+                throw new ApiException(HttpStatus.BAD_REQUEST, "Not [%s] EnoughProduct in stock".formatted(product.getName()));
+            }
+        });
+        //Sale
+        Sale sale = new Sale();
+        sale.setSoldDate(saleDTO.getSaleDate());
+        saleRepository.save(sale);
+
+        //SaleDetail
+        saleDTO.getProducts().forEach(ps->{
+            Product product = productMap.get(ps.getProductId());
+            SaleDetail saleDetail= new SaleDetail();
+            saleDetail.setAmount(product.getSalePrice());
+            saleDetail.setProduct(product);
+            saleDetail.setSale(sale);
+            saleDetail.setUnit(ps.getNumberOfUnit());
+            saleDetailRepository.save(saleDetail);
+
+            //Cut Stock
+            Integer avaliableUnit=product.getAvailableUnit()- ps.getNumberOfUnit();
+            product.setAvailableUnit(avaliableUnit);
+            productRepository.save(product);
+        });

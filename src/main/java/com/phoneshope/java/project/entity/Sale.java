@@ -4,6 +4,7 @@ package com.phoneshope.java.project.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -16,5 +17,5 @@ public class Sale {
     private Long id;
 
     @Column(name = "sold_date")
-    private LocalDateTime soldDate;
+    private LocalDate soldDate;
 }

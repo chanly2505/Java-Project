@@ -2,7 +2,9 @@ package com.phoneshope.java.project.controller;
 
 
 import com.phoneshope.java.project.dto.ProductDTO;
+import com.phoneshope.java.project.dto.SaleDTO;
 import com.phoneshope.java.project.service.ProductService;
+import com.phoneshope.java.project.service.SaleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,10 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/sell")
 public class SaleController {
 
-    private  final ProductService productService;
+    private  final SaleService saleService;
 
     @PostMapping
-    public ResponseEntity<?> createSale(@RequestBody ProductDTO productDTO){
+    public ResponseEntity<?> createSale(@RequestBody SaleDTO saleDTO){
+        saleService.sell(saleDTO);
         return ResponseEntity.ok().build();
     }
 }
