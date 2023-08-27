@@ -5,7 +5,7 @@ spring:
     password: pospassword
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto:  update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect

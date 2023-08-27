@@ -1,12 +1,13 @@
 package com.phoneshope.java.project.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class ProductImportDto {
@@ -21,5 +22,5 @@ public class ProductImportDto {
     private BigDecimal importPrice;
 
     @NotNull(message = "ImportDate can't be null")
-    private LocalDate importDate;
+    private LocalDateTime importDate;
 }

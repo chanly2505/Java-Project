@@ -19,7 +19,7 @@ import java.util.List;
 public class ModelServiceImpl implements ModelService {
 
     private final ModelRepository modelRepository;
-    private final ModelMappers modelMapper;
+
 
     @Override
     public Model save(Model model) {

@@ -15,4 +15,5 @@ public class Brand {
     private Long id;
     @Column(name = "brand_name")
     private  String name;
+    private Boolean active;
 }

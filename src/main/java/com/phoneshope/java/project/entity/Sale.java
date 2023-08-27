@@ -12,10 +12,12 @@ import java.time.LocalDateTime;
 @Table(name = "sales")
 public class Sale {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sale_id")
     private Long id;
 
     @Column(name = "sold_date")
-    private LocalDate soldDate;
+    private LocalDateTime soldDate;
+
+    private  Boolean active;
 }

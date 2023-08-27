@@ -1,0 +1,32 @@
+        List<ProductReportDto> list= new ArrayList<>();
+        SaleDetailFilter detailFilter =new SaleDetailFilter();
+        detailFilter.setStartDate(startDate);
+        detailFilter.setEndDate(endDate);
+        Specification<SaleDetail> specification = new SaleDetailSpec(detailFilter);
+        List<SaleDetail>saleDetailList=saleDetailRepository.findAll(specification);
+
+        List <Long> productIds=saleDetailList.stream()
+                .map(sd ->sd.getProduct().getId())
+                .toList();
+       Map<Long,Product> productListMap= productRepository.findAllById(productIds)
+                .stream()
+                .collect(Collectors.toMap(Product::getId, Function.identity()));
+       Map<Product,List<SaleDetail>> saleDetailMap =saleDetailList
+                .stream()
+                .collect(Collectors.groupingBy(SaleDetail::getProduct));
+       for (var entry:saleDetailMap.entrySet()){
+           Product product=  productListMap.get(entry.getKey().getId());
+           List<SaleDetail> sdList =entry.getValue();
+           //Total Unit
+           Integer unit=  sdList.stream().map(SaleDetail:: getUnit)
+                   .reduce(0,(a,b) -> a+b);
+          double totalAmount= sdList.stream()
+                   .mapToDouble(sd -> sd.getUnit() * sd.getAmount().doubleValue())
+                   .sum();
+           ProductReportDto reportDto= new ProductReportDto();
+            reportDto.setProductId(product.getId());
+            reportDto.setProductName(product.getName());
+            reportDto.setUnit(unit);
+            reportDto.setGetTotalAmount(BigDecimal.valueOf(totalAmount));
+            list.add(reportDto);
+       }

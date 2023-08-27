@@ -21,4 +21,6 @@ public interface BrandService {
 
     Page<Brand> getBrands(Map<String, String > params);
 
+    void deleted(Long id);
+
 }
