@@ -1,11 +1,8 @@
 package com.phoneshope.java.project.entity;
 
-
 import lombok.Data;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -18,7 +15,7 @@ public class ProductImportHistory {
     private Long id;
 
     @Column(name = "date_Import")
-    private LocalDate dateImport;
+    private LocalDateTime dateImport;
 
     @Column(name = "import_Unit")
     private  Integer importUnit;

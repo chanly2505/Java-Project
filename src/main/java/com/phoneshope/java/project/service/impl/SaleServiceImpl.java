@@ -1,6 +1,11 @@
 package com.phoneshope.java.project.service.impl;
 
+import com.phoneshope.java.project.dto.ProductSoldDTO;
 import com.phoneshope.java.project.dto.SaleDTO;
+import com.phoneshope.java.project.entity.Product;
+import com.phoneshope.java.project.entity.Sale;
+import com.phoneshope.java.project.entity.SaleDetail;
+import com.phoneshope.java.project.exception.ResourceNotFoundException;
 import com.phoneshope.java.project.repository.ProductRepository;
 import com.phoneshope.java.project.repository.SaleDetailRepository;
 import com.phoneshope.java.project.repository.SaleRepository;
@@ -25,54 +30,70 @@ public class SaleServiceImpl implements SaleService {
 
     @Override
     public void sell(SaleDTO saleDTO) {
-        //TODO
-        //Validation
-        //validate(saleDTO);
-        //Save
-        //Deleted Data in database
+        List<Long> productsId = saleDTO.getProducts().stream()
+                .map(ProductSoldDTO::getProductId)
+                .toList();
+        productsId.forEach(productService::getById);
+        List<Product> products = productRepository.findAllById(productsId);
+        Map<Long, Product> productMap = productRepository
+                .findAllById(productsId)
+                .stream()
+                .collect(Collectors.toMap(Product::getId, Function.identity()));
 
+        //Sale
+        Sale sale = new Sale();
+        sale.setSoldDate(saleDTO.getSaleDate());
+        saleRepository.save(sale);
 
+        //SaleDetail
+        saleDTO.getProducts().forEach(ps->{
+            Product product = productMap.get(ps.getProductId());
+            SaleDetail saleDetail= new SaleDetail();
+            saleDetail.setAmount(product.getSalePrice());
+            saleDetail.setProduct(product);
+            saleDetail.setSale(sale);
+            saleDetail.setUnit(ps.getNumberOfUnit());
+            saleDetailRepository.save(saleDetail);
+
+            //Cut Stock
+            Integer avaliableUnit=product.getAvailableUnit()- ps.getNumberOfUnit();
+            product.setAvailableUnit(avaliableUnit);
+            productRepository.save(product);
+        });
     }
 
-//    private void saveSale(SaleDTO saleDTO) {
-//        saleDTO.getSaleDate();
-//        Sale sale = new Sale();
-//        sale.setSoldDate(saleDTO.getSaleDate());
-//        saleRepository.save(sale);
-//
-//        //Sale Details
-//        saleDTO.getProducts().forEach(ps -> {
-//            SaleDetail saleDetail = new SaleDetail();
-//            saleDetail.setAmount(null);
-//        });
-//    }
-//
-//    private void validate(SaleDTO saleDTO) {
-//        saleDTO.getProducts().forEach(ps -> {
-//            Product product = productService.getById(ps.getProductId());
-//            if (product.getAvailableUnit() < ps.getNumberOfUnit()) {
-//                throw new ApiException(HttpStatus.BAD_REQUEST, "Not [%s] EnoughProduct in stock".formatted(product.getName()));
-//            }
-//        });
-//    }
+    @Override
+    public List<Sale> getAllSale() {
+        return saleRepository.findAll();
+    }
+
+    @Override
+    public Sale getByID(Long saleId) {
+        return saleRepository.findById(saleId)
+                .orElseThrow(() ->new ResourceNotFoundException("saleID" ,saleId));
+    }
+
+    @Override
+    public void cancelSale(Long saleId) {
+        //Update Sale Status
+        Sale sale = getByID(saleId);
+        sale.setActive(false);
+        saleRepository.save(sale);
+
+        //Update Stock
+        List<SaleDetail> saleDetails = saleDetailRepository.findBySaleId(saleId);
+       List<Long> productsId = saleDetails.stream().map(sd -> sd.getProduct().getId()).toList();
+        List<Product> products = productRepository.findAllById(productsId);
+        Map<Long, Product> productMap = productRepository
+                .findAllById(productsId)
+                .stream()
+                .collect(Collectors.toMap(Product::getId, Function.identity()));
+        saleDetails.forEach(sd ->{
+            Product product = productMap.get(sd.getProduct().getId());
+            product.setAvailableUnit(product.getAvailableUnit() + sd.getUnit());
+            productRepository.save(product);
+        });
+    }
 }
-//    private void validate2(SaleDTO saleDTO){
-//       List<Long> productId = saleDTO.getProducts().stream()
-//                .map(ProductSoldDTO::getProductId)
-//                .toList();
-//       productId.forEach(productService::getById);
-//       Map<Long,Product> productMap =productRepository
-//               .findAllById(productId)
-//               .stream()
-//               .collect(Collectors.toMap(Product::getId, Function.identity()));
-//
-//       saleDTO.getProducts().forEach(ps -> {
-//       Product product =productMap.get(ps.getProductId());
-//           if (product.getAvailableUnit() < ps.getNumberOfUnit()){
-//               throw new ApiException(HttpStatus.BAD_REQUEST,"Not [%s] EnoughProduct in stock".formatted(product.getName()));
-//           }
-//        });
-//    }
-//}
 
 

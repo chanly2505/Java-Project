@@ -6,11 +6,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
-public interface ColorMapper {
+public interface ColorMappers {
 
-    ColorMapper INSTANCE = Mappers.getMapper(ColorMapper.class);
+    ColorMappers INSTANCE = Mappers.getMapper(ColorMappers.class);
 
-    Color toColor(ColorDTO colorDTO);
+    Color toColor (ColorDTO colorDTO);
 
-    ColorDTO toEntity(Color color);
+    ColorDTO toColorDto(Color color);
 }
