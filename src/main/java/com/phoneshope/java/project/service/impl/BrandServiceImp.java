@@ -1,6 +1,7 @@
 package com.phoneshope.java.project.service.impl;
 
 import com.phoneshope.java.project.entity.Brand;
+import com.phoneshope.java.project.exception.ApiException;
 import com.phoneshope.java.project.exception.ResourceNotFoundException;
 import com.phoneshope.java.project.repository.BrandRepository;
 import com.phoneshope.java.project.service.BrandService;
@@ -11,10 +12,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 @Slf4j
@@ -26,6 +29,11 @@ public class BrandServiceImp implements BrandService {
 
     @Override
     public Brand create(Brand brand) {
+        String text ="This Brand is already Used with name = %s not found";
+        List<Brand> validateByName = brandRepository.findByNameLike(brand.getName());
+        if (!validateByName.isEmpty()){
+            throw new ApiException(HttpStatus.BAD_REQUEST , text.formatted(brand.getName()));
+        }
         return brandRepository.save(brand);
     }
 

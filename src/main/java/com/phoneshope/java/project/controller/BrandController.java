@@ -13,6 +13,7 @@ import com.phoneshope.java.project.service.ModelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class BrandController {
 
     private final BrandService brandService;
     private final ModelService modelService;
-
+    @PreAuthorize("hasAuthority('brand:write')")
     @RequestMapping(method = RequestMethod.POST)
      public ResponseEntity<?> create (@RequestBody BrandDto brandDto){
         Brand brand = BrandMapper.INSTANCE.toBrand(brandDto);
@@ -48,9 +49,9 @@ public class BrandController {
         brandService.deleted(id);
         return ResponseEntity.ok().build();
     }
-
+    @PreAuthorize("hasAuthority('brand:read')")
     @GetMapping("/getallbrand")
-    public ResponseEntity<?> list(){
+    public ResponseEntity<?> list() throws ApiException{
         List<BrandDto> listBrand = brandService.getAllBrands()
                 .stream()
                 .map(BrandMapper.INSTANCE::toBrandDto)
@@ -59,7 +60,7 @@ public class BrandController {
         return ResponseEntity.ok(listBrand);
     }
     @GetMapping
-    public ResponseEntity<?> getBrandsByName (@RequestParam Map<String , String > params){
+    public ResponseEntity<?> getBrandsByName (@RequestParam Map<String , String > params) throws  ApiException {
         Page<Brand> brands = brandService.getBrands(params);
         PageDTO pageDTO = new PageDTO(brands);
         return ResponseEntity.ok(pageDTO);

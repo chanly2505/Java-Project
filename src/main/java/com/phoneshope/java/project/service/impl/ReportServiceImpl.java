@@ -89,22 +89,23 @@ public class ReportServiceImpl implements ReportService {
        List<Product> products = productRepository.findAllById(productIds);
         Map<Long, Product> productMap = products.stream().collect(Collectors.toMap(p -> p.getId(), p -> p));
         Map<Product, List<ProductImportHistory>> importMap = importHistories.stream()
-                .collect(Collectors.groupingBy(pi -> pi.getProduct()));
+                .collect(Collectors.groupingBy(ProductImportHistory::getProduct));
+        var expenseReportDtos = new ArrayList<ExpenseReportDto>();
         for (var entry:importMap.entrySet()){
             Product product =productMap.get(entry.getKey().getId());
             List<ProductImportHistory> importHistoryList= entry.getValue();
-            Integer unit = importHistoryList.stream().map(ProductImportHistory::getImportUnit)
-                    .reduce(0 , Integer::sum);
+            int totalUnit = importHistoryList.stream()
+                    .mapToInt(pi -> pi.getImportUnit())
+                    .sum();
             double totalAmount= importHistoryList.stream().mapToDouble(ip -> ip.getImportUnit() * ip.getPricePerUnit().doubleValue())
                     .sum();
             var expenseReportDto = new ExpenseReportDto();
             expenseReportDto.setProductId(product.getId());
             expenseReportDto.setProductName(product.getName());
             expenseReportDto.setPricePerUnit(product.getSalePrice());
-            expenseReportDto.setTotalUnit(unit);
             expenseReportDto.setTotalAmount(BigDecimal.valueOf(totalAmount));
-            list.add(expenseReportDto);
+            expenseReportDtos.add(expenseReportDto);
         }
-        return list;
+        return expenseReportDtos;
     }
 }

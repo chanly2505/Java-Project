@@ -6,10 +6,12 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BrandRepository extends JpaRepository<Brand , Long> , JpaSpecificationExecutor<Brand> {
 
     List<Brand> findByNameLike(String name);
+    Optional<Brand> findByName(String name);
 
 }

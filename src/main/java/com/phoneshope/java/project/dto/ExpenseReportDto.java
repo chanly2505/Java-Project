@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 public class ExpenseReportDto {
     private Long productId;
     private String productName;
-    private Integer totalUnit;
     private BigDecimal pricePerUnit;
     private BigDecimal totalAmount;
 }
