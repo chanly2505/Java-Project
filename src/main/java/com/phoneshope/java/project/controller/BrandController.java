@@ -16,16 +16,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.Map;
-@RequiredArgsConstructor
+
 @RestController
-@RequestMapping("/brand")
+@RequestMapping("brand")
+@RequiredArgsConstructor
 public class BrandController {
 
     private final BrandService brandService;
     private final ModelService modelService;
-    @PreAuthorize("hasAuthority('brand:write')")
+    @PreAuthorize("hasAnyAuthority('brand:write','ROLE_ADMIN')")
     @RequestMapping(method = RequestMethod.POST)
      public ResponseEntity<?> create (@RequestBody BrandDto brandDto){
         Brand brand = BrandMapper.INSTANCE.toBrand(brandDto);
@@ -49,7 +51,7 @@ public class BrandController {
         brandService.deleted(id);
         return ResponseEntity.ok().build();
     }
-    @PreAuthorize("hasAuthority('brand:read')")
+    @RolesAllowed("ROLE_SALE")
     @GetMapping("/getallbrand")
     public ResponseEntity<?> list() throws ApiException{
         List<BrandDto> listBrand = brandService.getAllBrands()
