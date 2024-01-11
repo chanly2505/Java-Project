@@ -1,0 +1,46 @@
+    //    @GetMapping("filter")
+//    public ResponseEntity<?> getBrandsByName (@RequestParam("name") String name){
+//        List<BrandDto> listBrand=brandService.getBrandsByName(name)
+//                .stream()
+//                .map(BrandMapper.INSTANCE::toBrandDto)
+//                .collect(Collectors.toList());
+//        return  ResponseEntity.ok(listBrand);
+//    }
+
+
+
+//    @Override
+//    public List<Brand> getBrands(Map<String, String> params) {
+//        BrandFilter brandFilter= new BrandFilter();
+//        if (params.containsKey("name")){
+//            String  name = params.get("name");
+//            brandFilter.setName(name);
+//        }
+//        if (params.containsKey("id")){
+//            String  id = params.get("id");
+//            brandFilter.setId(Integer.parseInt(id));
+//        }
+//
+//        BrandSpec brandSpec = new BrandSpec(brandFilter);
+//
+//
+//        Pageable pageable= PageUtill.getPageable(pageNumber,pageLimit);
+//        return    brandRepository.findAll(brandSpec);
+//    }
+
+
+//        Optional<Brand> optionalBrand = brandRepository.findById(id);
+//        if (optionalBrand.isPresent()){
+//            return optionalBrand.get();
+//        }else {
+//            throw new HttpClientErrorException(HttpStatus.NOT_FOUND,String.format( "Brand Id =%d Not Found", id));
+//        }
+
+
+//() ->  new HttpClientErrorException(HttpStatus.NOT_FOUND,String.format( "Brand Id =%d Not Found", id))
+
+		/*System.out.println("============");
+		boolean existsByName = brandRepository.existsByName("Nokia");
+		System.out.println(existsByName);
+		System.out.println("============");
+		*/

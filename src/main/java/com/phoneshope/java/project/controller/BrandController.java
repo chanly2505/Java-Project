@@ -21,19 +21,19 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("brand")
+@RequestMapping("/brand")
 @RequiredArgsConstructor
 public class BrandController {
 
     private final BrandService brandService;
     private final ModelService modelService;
-    @PreAuthorize("hasAnyAuthority('brand:write','ROLE_ADMIN')")
-    @RequestMapping(method = RequestMethod.POST)
-     public ResponseEntity<?> create (@RequestBody BrandDto brandDto){
+    @PostMapping
+     public ResponseEntity<?> create (@RequestBody BrandDto brandDto)throws  ApiException{
         Brand brand = BrandMapper.INSTANCE.toBrand(brandDto);
          brand= brandService.create(brand);
          return ResponseEntity.ok(BrandMapper.INSTANCE.toBrandDto(brand));
      }
+
     @GetMapping("{id}")
     public ResponseEntity<?> getOneBrand (@PathVariable("id") Long brandId){
         Brand brand = brandService.getById(brandId);
@@ -51,7 +51,7 @@ public class BrandController {
         brandService.deleted(id);
         return ResponseEntity.ok().build();
     }
-    @RolesAllowed("ROLE_SALE")
+
     @GetMapping("/getallbrand")
     public ResponseEntity<?> list() throws ApiException{
         List<BrandDto> listBrand = brandService.getAllBrands()
@@ -61,6 +61,7 @@ public class BrandController {
 
         return ResponseEntity.ok(listBrand);
     }
+
     @GetMapping
     public ResponseEntity<?> getBrandsByName (@RequestParam Map<String , String > params) throws  ApiException {
         Page<Brand> brands = brandService.getBrands(params);
@@ -73,4 +74,5 @@ public class BrandController {
         List<ModelDTO> list=brand.stream().map(ModelMappers.INSTANCE::toModelDto).toList();
         return ResponseEntity.ok(list);
     }
+
 }

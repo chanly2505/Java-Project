@@ -3,7 +3,7 @@ package com.phoneshope.java.project.controller;
 import com.phoneshope.java.project.dto.ExpenseReportDto;
 import com.phoneshope.java.project.dto.ProductReportDto;
 import com.phoneshope.java.project.service.ReportService;
-import com.phoneshope.java.project.service.projection.ProductSold;
+import com.phoneshope.java.project.projection.ProductSold;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;

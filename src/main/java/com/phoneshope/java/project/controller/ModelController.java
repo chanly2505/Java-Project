@@ -19,7 +19,6 @@ public class ModelController {
 
     private final ModelService modelService;
     private final  ModelMappers modelMappers;
-    @RolesAllowed("ROLE_ADMIN")
     @PostMapping
     public ResponseEntity<?> create(@RequestBody ModelDTO dto) throws ApiException {
         Model model= modelMappers.toModel(dto);

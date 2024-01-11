@@ -1,7 +1,7 @@
 package com.phoneshope.java.project.repository;
 
 import com.phoneshope.java.project.entity.Sale;
-import com.phoneshope.java.project.service.projection.ProductSold;
+import com.phoneshope.java.project.projection.ProductSold;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

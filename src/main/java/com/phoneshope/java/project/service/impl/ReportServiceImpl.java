@@ -10,7 +10,7 @@ import com.phoneshope.java.project.repository.ProductRepository;
 import com.phoneshope.java.project.repository.SaleDetailRepository;
 import com.phoneshope.java.project.repository.SaleRepository;
 import com.phoneshope.java.project.service.ReportService;
-import com.phoneshope.java.project.service.projection.ProductSold;
+import com.phoneshope.java.project.projection.ProductSold;
 import com.phoneshope.java.project.spec.ProductImportHistoryFilter;
 import com.phoneshope.java.project.spec.ProductImportHistorySpec;
 import com.phoneshope.java.project.spec.SaleDetailFilter;
